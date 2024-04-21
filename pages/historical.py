@@ -29,38 +29,67 @@ MIN_YEARS, MAX_YEARS = min(all_years), max(all_years)
 
 
 def right_content(*, title, date, description, image):
+    print(image)
     return [
-        dmc.Title(title, color='white', align='center'),
-        dmc.Title(date, order=3, color='white',
-                  align='center'),
-        dmc.Container(
-            children=[
-                dmc.Image(
-                    src=fr'assets\story\{image}',
-                    width='100%',
-                    height='100%',
-                    #radius=4,
-                    withPlaceholder=True,
-                    #style={'border-radius': '50%'},
-                    styles={
-                        # 'placeholder': {'background-color': '#000000'},
-                        'image': {'border-radius': '50%', 'object-fit': 'cover'}
-                    },
-                ) if image else None
-            ],
-            px=0,
-        ),
-        dmc.Text(description, color='white', align='center')
-    ]
-def left_content(*, title, date, description, image):
-    return 
+            dmc.Space(h='40px'),
+            dmc.Title(title, id='story-title', order=1,
+                        style={'color': 'green'}, align='center'
+                        ),
+
+            dmc.Title(date, id='story-date', order=2,
+                style={'color': 'red'}, align='center'),
+
+            # html.Img(src='assets/free-palestine.png',  
+            html.Img(src=f'assets/story/{image}',  
+                        style={'object-fit': 'contain', 
+                               'height' : '30vh', 'border-radius': '10%'}
+                    ),
+            dmc.Center(
+                [
+                    dmc.Text(description,
+                        style={'color': 'white', 'width': '50%'},
+                        align='center',
+                        id='story-desc'
+                    ),
+                ]
+            )
+        ]
+
+# def right_content(*, title, date, description, image):
+#     return [
+#         dmc.Title(title, color='white', align='center'),
+#         dmc.Title(date, order=3, color='white',
+#                   align='center'),
+#         dmc.Container(
+#             children=[
+#                 dmc.Image(
+#                     src=f'assets/story/{image}',
+#                     alt='historical',
+#                     width='100%',
+#                     height='100%',
+#                     #radius=4,
+#                     withPlaceholder=True,
+#                     #style={'border-radius': '50%'},
+#                     styles={
+#                         # 'placeholder': {'background-color': '#000000'},
+#                         'image': {'border-radius': '50%', 'object-fit': 'cover'}
+#                     },
+#                 ) if image else None
+#             ],
+#             px=0,
+#         ),
+#         dmc.Text(description, color='white', align='center')
+#     ]
+# def left_content(*, title, date, description, image):
+#     return 
 
 
 layout = dmc.Grid(
     [
         dmc.Col(
             children=[
-                dmc.Stack(id='historical-content',
+                dmc.Stack(
+                    id='historical-content',
                     # children=[
                     #     dmc.Space(h='40px'),
                     #     dmc.Title('The full story about palestine..', id='story-title', order=1,
@@ -70,8 +99,8 @@ layout = dmc.Grid(
                     #     dmc.Title('10, Octobar 2023', id='story-date', order=2,
                     #         style={'color': 'red'}, align='center'),
 
-                    #     html.Img(src=f'assets\story\First Zionist Congress1.jpg',
-                    #     # html.Img(src=r'assets\free-palestine.png',  
+                    #     # html.Img(src='assets/free-palestine.png',  
+                    #     html.Img(src='assets/free.png',  
                     #              style={'object-fit': 'contain', 'height' : '30vh', 'border-radius': '20%'}
                     #             ),
                     #     dmc.Center(
@@ -79,9 +108,6 @@ layout = dmc.Grid(
                     #             dmc.Text(
                     #                 children=[
                     #                     "Dive into the ture story of palestine"
-                    #                     "milestones. Explore real-time data visualizations and get insights into the "
-                    #                     "milestones. Explore real-time data visualizations and get insights into the "
-                    #                     "milestones. Explore real-time data visualizations and get insights into the "
                     #                     "milestones. Explore real-time data visualizations and get insights into the "
                     #                     "future of space exploration."
                     #                 ],
@@ -98,7 +124,6 @@ layout = dmc.Grid(
                     spacing=30,
                     h='80vh',
                     mah='90%',
-                    # mt='70px'
                 ),
                 dmc.Container(
                     [
@@ -108,35 +133,13 @@ layout = dmc.Grid(
                             min=MIN_YEARS,
                             max=MAX_YEARS,
                             step=None,
-                            # marks={'label' : {str(years):str(years) for years in all_years},
-                            #        'style' : },
-                            marks={str(years):str(years) for years in all_years},
+                            marks={ str(years) : { 'label':str(years), 'style' : {
+                                'display': 'None'
+                            }} for years in all_years},
+                            # marks={str(years):str(years) for years in all_years},
                             tooltip={"placement": "bottom", "always_visible": True,}
-                            # tooltip={
-                            #             "always_visible": True,
-                            #             # "style": {"color": "LightSteelBlue", "fontSize": "20px"},
-                            #         },
                             # style={'width': '50%'},
                         ),
-                        # dmc.Slider(
-                        #     id='year-slider',
-                        #     value=MIN_YEARS,
-                        #     min=MIN_YEARS,
-                        #     max=MAX_YEARS,
-                        #     step=None,
-                        #     marks=[{'value': i, 'label': i} for i in story['year']],
-
-                        #     color='white',
-                        #     style={'width': '50%'},
-                        #     styles={
-                        #         'bar': {'background-color': '#D291DF', 'height': '3px'},
-                        #         # 'track': {'height': '3px'},
-                        #         # 'mark': {'display': 'None'},
-                        #         'label': {"transform": "rotate(45deg)", "white-space": "nowrap"},
-                        #         'markLabel': {'margin-top': '15px'},
-                        #         'thumb': {'background-color': '#D291DF', 'border': 'solid 2px white'}
-                        #     }
-                        # )
                     ],
                     mt=50,
                     mb=50,
@@ -153,6 +156,7 @@ layout = dmc.Grid(
             [
                 dmc.Stack(
                     id='map',
+                    # id='historical-content',
                     align='center',
                     justify='center',
                     spacing='25px',
@@ -171,18 +175,19 @@ layout = dmc.Grid(
     Output('historical-content', 'children'),
     Output('historical-content', 'className'),
     Input('year-slider', 'value'),
-    prevent_initial_call=True
+    # prevent_initial_call=True
 )
 def update_historical_content(value):
     # input_id = list(ctx.triggered_prop_ids)[0].split('.')[-1]
     print(value)
     df = story[story['year'] == value]
     # if input_id == 'elements':
-    return left_content(
+    # return left_content(
+    return right_content(
         title=df['event'],
         date=df['year'],
         description=df['notes'],
-        image=df['picture1'],
+        image=df['picture1'].values[0],
         # image=None
     ), 'hide'
     # else:
