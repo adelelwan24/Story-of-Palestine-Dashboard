@@ -26,14 +26,9 @@ layout = dmc.Grid(
     [
         dmc.Col(
             [   
-                # dmc.Group([
-                #     # de.Lottie(url=url, options=options, isClickToPauseDisabled=True),
-                #     # de.Lottie(url=f'http://127.0.0.1:8050/loader?lottie=flag.json', options=options, isClickToPauseDisabled=True),
-                #     # de.Lottie(url=f'/loader?lottie={lottie_name}', options=options, isClickToPauseDisabled=True, width='50%'),
-                #     html.Img(src='assets\palestinian-map.png'),
-                #         ], style={'height' : '70vh'}
-                # ),
-                html.Img(src='assets\palestinian-map.png', style={'height' : '70vh'}),
+                # de.Lottie(url=f'http://127.0.0.1:8050/loader?lottie=flag.json', options=options, isClickToPauseDisabled=True),
+                de.Lottie(url=f'/loader?lottie={lottie_name}', options=options, isClickToPauseDisabled=True, width='50%'),
+                # html.Img(src='assets\palestinian-map.png', style={'height' : '70vh'}),
                 dmc.Stack(
                     children=[
                         dmc.Title('The full story about palestine..', 
@@ -72,7 +67,6 @@ layout = dmc.Grid(
                     # justify='flex-end',
                     className='stack-left-container',
                     spacing=30,
-                    # mt=-170
                 )
             ],
             md=12, lg=8
@@ -89,10 +83,6 @@ layout = dmc.Grid(
                             variant="oval"
                         ),
                         html.Img(src='assets\pennant.png', height='100%'),
-                        # html.Img(src='assets\palestinian-map.png', height='100%'),
-                        # html.Img(src=r'assets\no-war.png', height='100%'),
-                        # de.Lottie(url=f'/loader?lottie={lottie_name}', options=options, isClickToPauseDisabled=True,
-                        #     height= '10%', width='60%'),
                     ]
                 ),
             ], md=12, lg=4

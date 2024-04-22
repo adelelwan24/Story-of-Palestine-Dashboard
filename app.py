@@ -3,6 +3,7 @@ import json
 import os
 from dash import html, dcc, Output, Input, callback
 from flask import send_from_directory, request
+
 from assets.footer import footer
 from pages.nav import navbar
 
@@ -14,10 +15,6 @@ app = dash.Dash(
     # update_title=False,
     # suppress_callback_exceptions=True,
     # prevent_initial_callbacks=True,
-    meta_tags=[
-        {"name": "description", "content": "A Dash app focused on space exploration data."},
-        {"name": "keywords", "content": "Space, Launch, Data, Visualization, Dash"}
-    ], external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
 )
 
 server = app.server
@@ -30,6 +27,7 @@ def serving_lottie_loader():
     directory = os.path.join(os.getcwd(), "assets")
     lottie = request.args.get('lottie')
     return send_from_directory(directory, lottie)
+
 
 app.layout = html.Div(
     [
