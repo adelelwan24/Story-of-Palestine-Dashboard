@@ -9,15 +9,64 @@ import dash_extensions as de
 lottie_name = 'flag.json'
 options = dict(loop=True, autoplay=True)
 
+support_data = pd.read_excel('data/SupportPageData.xlsx')
+
+
 dash.register_page(
     __name__,
     # path='/support',
     # image='home.png',
     # image='free-palestine.png',
     title='Story Of Palestine | Support',
-    description='Explore the world of space exploration through a 3D rotating globe, showcasing '
-                'the number of launches by country since the dawn of the space age'
+    description=    "Stop the attacks on Gaza!"
+                    "Take action for Palestine"
 )
+
+# Function to create a dmc.Card with customizable content
+def create_card(image_src, title, description, button_link, button_text="Donate", button_color="blue"):
+    return dmc.Card(
+        children=[
+            dmc.CardSection(
+                # dmc.Image(src=image_src, height=160),
+                dmc.Center(
+                    html.Img(src=image_src, height=160, width=160,
+                         style={
+                             "width": "100%", 
+                            # 'align': 'center',
+                            #  "height": "100%", 
+                             "objectFit": "fill"}),
+                
+                    ),
+                ), 
+            dmc.Stack([ 
+                dmc.Group(
+                    [
+                        dmc.Text(title, weight=500),
+                        dmc.Badge("On Sale", color="red", variant="light"),
+                    ],
+                    position="apart",
+                    mt="md",
+                    mb="xs",
+                ),
+                dmc.Text(description, size="sm", color="dimmed"),
+                dmc.Button(
+                    children=[
+                        html.A(button_text, href=button_link, target="_blank")
+                    ],
+                    variant="light",
+                    color=button_color,
+                    fullWidth=True, mt="md",
+                    radius="md",
+                    bottom=0
+                ),
+                ], justify='flex-end', w="100%", spacing=0,
+            )
+        ],
+        withBorder=True,
+        shadow="sm",
+        radius="md",
+        style={"width": 375, 'height': 375},
+    )
 
 layout = dmc.Grid(
     [
@@ -25,58 +74,60 @@ layout = dmc.Grid(
             [   
                 dmc.Stack(
                     children=[
-                        dmc.Title('The full story about palestine..', 
-                                  style={'color': 'green'}, align='center'),
-                        dmc.Center(
+                        dmc.Title('Stand With Palestine..', 
+                                  style={'color': 'red'}, align='center', mt=30),
+                        dmc.Stack(
                             [
                                 dmc.Text(
                                     children=[
-                                        "Dive into the ture story of palestine"
-                                        "milestones. Explore real-time data visualizations and get insights into the "
-                                        "future of space exploration."
+                                        "Stop the attacks on Gaza!",
                                     ],
-                                    style={'color': 'white', 'width': '50%'},
-                                    align='center',
-                                    id='main-text'
+                                    style={'color': 'gray', 'width': '100%'},
                                 ),
+                                dmc.Text(
+                                    children=[
+                                     "Take action for Palestine"                                    
+                                     ],
+                                    style={'color': 'gray', 'width': '100%'},
+                                ),
+
                             ]
                         ),
-                        dcc.Link(
-                            [
-                                
-                            ],
-                            href='/historical'
-                        )
                     ],
                     align='center',
                     # justify='flex-end',
                     className='stack-left-container',
-                    spacing=30,
+                    spacing=20,
                 )
             ],
-            md=12, lg=8
+            md=3, lg=12, mb=20
         ),
         dmc.Col(
             [
-                dmc.Center(
-                    className='right-container',
-                    id='right-container',
-                    children=[
-                        dmc.Loader(
-                            color="blue",
-                            size="md",
-                            variant="oval"
-                        ),
-                        html.Img(src='assets\pennant.png', height='100%'),
-                    ]
-                ),
-            ], md=12, lg=4
+                #create_card(image_src= f"assets/support/{support_data['logo'][0]}", title=support_data['organization'][0], description=support_data['description'][0], button_link=support_data['donationLink'][0])
+                dmc.Group(
+                    [
+                        # dmc.Text(support_data['organization'][0], weight=500),
+                        # dmc.Badge("On Sale", color="red", variant="light"),
+                        create_card(image_src=f"assets/support/{support_data['logo'][i]}", 
+                            title=support_data['organization'][i], 
+                            description=support_data['description'][i], 
+                            button_link=support_data['donationLink'][i]) 
+
+                        for i in range(10)
+                    ],
+                    # position="apart",
+                    position="center",
+                    mt="md",
+                    mb="md", spacing=20,
+                )
+
+            ], md=9, lg=12
         ),
     ],
     id='support-grid',
     className='hide',
 )
-
 
 clientside_callback(
     """
