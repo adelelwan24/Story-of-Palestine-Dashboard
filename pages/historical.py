@@ -62,7 +62,7 @@ def right_content(*, image):
         dmc.Container(
             children=[
             html.Img(src=f'assets/map/{image}',  
-                        style={'object-fit': 'contain', 
+                        style={'object-fit': 'contain', 'border' : '5px', 
                                'height' : '70vh', 'border-radius': '10%'}
                     ) if image else None,
             ],
@@ -99,7 +99,8 @@ layout = dmc.Grid(
                             # marks={str(years):str(years) for years in all_years},
                             
                             tooltip={"always_visible": True, "placement": "bottom",
-                                     "style": {"color": "LightSteelBlue", "fontSize": "15px"},}
+                                    #  "style": {"color": "LightSteelBlue", "fontSize": "15px"},
+                                    }
                         ),
                     ],
                     mt=40,
@@ -180,7 +181,7 @@ def update_map(value):
     elif value > 1917:
         img = '1918.png'
     else:
-        img = 'free.jpg'
+        img = 'free.png'
 
     return right_content(image=img,), 'hide'
 
