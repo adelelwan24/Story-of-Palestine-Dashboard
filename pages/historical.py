@@ -20,7 +20,13 @@ dash.register_page(
 
 
 all_years = list(story['year'])
-MIN_YEARS, MAX_YEARS = min(all_years), max(all_years)
+all_ids = list(story['id'])
+
+MIN_YEARS, MAX_YEARS = min(all_ids), max(all_ids)
+# MIN_YEARS, MAX_YEARS = min(all_years), max(all_years)
+
+# def tranform_slider_label(value):
+#     return story[story['id'] == value]['year'].values[0]
 
 
 def left_content(*, title, date, description, image):
@@ -91,15 +97,16 @@ layout = dmc.Grid(
                             value=MIN_YEARS,
                             min=MIN_YEARS,
                             max=MAX_YEARS,
-                            step=None,
-                            marks={ str(years) : { 'label':str(years), 'style' : {
+                            step=1,
+                            marks={ str(id) : { 'label':str(year), 'style' : {
                                 'display': 'None',
                                 'transform' : 'rotate(90deg)'
-                            }} for years in all_years},
+                            }} for year, id in zip(all_years, all_ids)},
                             # marks={str(years):str(years) for years in all_years},
                             
                             tooltip={"always_visible": True, "placement": "bottom",
-                                    #  "style": {"color": "LightSteelBlue", "fontSize": "15px"},
+                                     "style": {"color": "LightSteelBlue", "fontSize": "15px"},
+                                     "transform" : "tranform_slider_label",
                                     }
                         ),
                     ],
@@ -141,7 +148,8 @@ def update_historical_content(value):
     if value == 0:
         value = story['year'].min()
 
-    df = story[story['year'] == value]
+    # df = story[story['year'] == value]
+    df = story[story['id'] == value]
 
     return left_content(
         title=df['event'],
@@ -169,8 +177,9 @@ def animation(_):
     # prevent_initial_call=True
 )
 def update_map(value):
-    if value == 0:
-        value = story['year'].min()
+    # if value == 0:
+    #     value = story['year'].min()
+    value = story[story['id'] == value]['year'].values[0]
 
     if value > 2014:
         img = '2015.png'
