@@ -8,6 +8,7 @@ all_icons = [
     'game-icons:globe',
     'mdi:events',
     'simple-line-icons:rocket',
+    'game-icons:life-support'
 ]
 
 
