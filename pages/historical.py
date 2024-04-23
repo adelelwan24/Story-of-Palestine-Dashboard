@@ -1,63 +1,57 @@
 import dash
-from dash import dcc, callback, Input, Output, ctx, no_update, html
+from dash import dcc, callback, Input, Output, html
 import dash_mantine_components as dmc
-import dash_extensions as de
-from dash_iconify import DashIconify
+
 
 import pandas as pd
 
 story = pd.read_excel('data/story.xlsx')
 
-LOTTIE_URL = 'https://lottie.host/bd952b99-002b-42d6-875e-57a7924ce27c/pEXSm4MJxX.json'
-LOTTIE_OPTIONS = dict(loop=True, autoplay=True)
-
 dash.register_page(
     __name__,
-    # image='historical.png',
-    # image='p.png',
     title='Story Of Palestine | Historical',
 )
-
 
 all_years = list(story['year'])
 all_ids = list(story['id'])
 
-MIN_YEARS, MAX_YEARS = min(all_ids), max(all_ids)
-# MIN_YEARS, MAX_YEARS = min(all_years), max(all_years)
-
-# def tranform_slider_label(value):
-#     return story[story['id'] == value]['year'].values[0]
+MIN, MAX = min(all_ids), max(all_ids)
 
 
 def left_content(*, title, date, description, image):
 
     return [
             dmc.Space(h='15px'),
-            dmc.Title(title, id='story-title', order=1,
-                        style={'color': 'green'}, align='center'
-                        ),
+
+            dmc.Title(title, id='story-title', order=1, className='title-green'),
 
             dmc.Title(date, id='story-date', order=2,
-                style={'color': 'red'}, align='center'),
-
-            # html.Img(src='assets/free-palestine.png',  
+                style={
+                    'color': 'red',
+                    '-webkit-text-stroke-width': '1.3px', 
+                    '-webkit-text-stroke-color': 'black',
+                }, align='center'
+            ),
+ 
             html.Img(src=f'assets/story/{image}',  
                         style={'object-fit': 'contain', 
                                'height' : '30vh', 'border-radius': '10%'}
                     ) if image else None,
 
             dmc.Text(description,
-                style={'color': 'white', 'width': '75%'},
-                align='center',
-            ),
+                # align='center', bg='rgba(0, 0, 0, 0.53)',
+                style={
+                        'color': 'white', 
+                        'width': '75%',
+                        '-webkit-text-stroke-width': '.5px', 
+                        'background' : 'rgba(0, 0, 0, 0.53)'
+                        },
+                    ),
         ]
 
 def right_content(*, image):
     return [
         dmc.Stack([
-        # dmc.Group([
-
-            # dmc.Badge("Palestine", color="green", variant='dot', size='md', fullWidth=True),
             dmc.Badge("Palestine", color="green", size='md', fullWidth=True),
             dmc.Badge("Occupation", color="red", size='md', fullWidth=True),
         ], 
@@ -86,7 +80,7 @@ layout = dmc.Grid(
                     align='center',
                     # justify='flex-end',
                     className='stack-left-container',
-                    spacing=20,
+                    spacing=10,
                     h='80vh',
                     mah='90%',
                 ),
@@ -94,9 +88,9 @@ layout = dmc.Grid(
                     [
                         dcc.Slider(
                             id='year-slider',
-                            value=MIN_YEARS,
-                            min=MIN_YEARS,
-                            max=MAX_YEARS,
+                            value=MIN,
+                            min=MIN,
+                            max=MAX,
                             step=1,
                             marks={ str(id) : { 'label':str(year), 'style' : {
                                 'display': 'None',
@@ -111,7 +105,7 @@ layout = dmc.Grid(
                         ),
                     ],
                     mt=40,
-                    # mb=50,
+                    w='60%',
                     style= {'bottom': 20}
                 ),
             ],
@@ -142,7 +136,6 @@ layout = dmc.Grid(
     Output('historical-content', 'children'),
     Output('historical-content', 'className'),
     Input('year-slider', 'value'),
-    # prevent_initial_call=True
 )
 def update_historical_content(value):
     if value == 0:
@@ -172,9 +165,8 @@ def animation(_):
 
 @callback(
     Output('map', 'children'),
-    Output('map', 'className'),
+    # Output('map', 'className'),
     Input('year-slider', 'value'),
-    # prevent_initial_call=True
 )
 def update_map(value):
     # if value == 0:
@@ -192,7 +184,8 @@ def update_map(value):
     else:
         img = 'free.png'
 
-    return right_content(image=img,), 'hide'
+    return right_content(image=img,)
+# , 'hide'
 
 @callback(
     Output('map', 'className', allow_duplicate=True),
