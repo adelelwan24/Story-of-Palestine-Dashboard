@@ -3,14 +3,23 @@ body {
 /* background-image:  url("../peace-sign.jpg"); */
 /* background-image:  url("../collage.jpg"); */
 /* background-image:  url("../mosque.jpg"); */
-/* background-image:  url("../mosque-transformed.webp"); */
+/* background-image:  url("../support/gazadamage.jpg"); */
+background-image:  url("../crowd-fliped.jpg");
 background-repeat: no-repeat;
 background-size: 100% ;
-background: linear-gradient(90deg, rgba(11,6,84,1) 0%, rgba(1,4,20,1) 45%, rgba(0,0,0,1) 75%);
+background-attachment: fixed;
+/* background: linear-gradient(90deg, rgba(11,6,84,1) 0%, rgba(1,4,20,1) 45%, rgba(0,0,0,1) 75%); */
 /* background: linear-gradient(90deg, rgba(11,6,84,1) 0%, rgba(1,4,20,1) 45%, rgba(0,0,0,1) 75%); */
 /* background: linear-gradient(135deg, rgb(0, 0, 0), rgb(255, 255, 255) , rgb(1, 144, 6) ); */
 }
 
 .icon-color {
     color: red;
+}
+
+.title-green {
+    color: green;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    text-shadow: 0 0 3px
 }
