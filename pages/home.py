@@ -31,15 +31,13 @@ layout = dmc.Grid(
                 # html.Img(src='assets\palestinian-map.png', style={'height' : '70vh'}),
                 dmc.Stack(
                     children=[
-                        dmc.Title('The full story about palestine..', 
+                        dmc.Title('The full story of Palestine..', className='title-green',
                                   style={'color': 'green'}, align='center'),
                         dmc.Center(
                             [
                                 dmc.Text(
                                     children=[
-                                        "Dive into the ture story of palestine"
-                                        "milestones. Explore real-time data visualizations and get insights into the "
-                                        "future of space exploration."
+                                        "Dive into the evolution of the Palestinian case with brief historical key events..."
                                     ],
                                     style={'color': 'white', 'width': '50%'},
                                     align='center',
@@ -52,19 +50,21 @@ layout = dmc.Grid(
                                 dmc.Button(
                                     'start',
                                     id='start-btn',
-                                    variant='outline',
-                                    color='white',
+                                    variant='filled',
+                                    # variant='outline',
+                                    # color='gray',
+                                    color='green',
+                                    style={'color' : 'black'},
                                     size='lg',
                                     uppercase=True,
                                     rightIcon=DashIconify(className='icon-color', 
-                                                          icon='ion:rocket-outline', width=30)
+                                                          icon='noto-v1:red-triangle-pointed-down', width=30)
                                 ),
                             ],
                             href='/historical'
                         )
                     ],
                     align='center',
-                    # justify='flex-end',
                     className='stack-left-container',
                     spacing=30,
                 )
