@@ -50,10 +50,10 @@ fig1 = px.scatter(
     color="Governorate",
     size_max=30,
     template='plotly_dark',
-    title='Recent IDPs in West Bank',
+    title='Recent IDPs in West Bank (2023-2024)',
 )
 
-fig2 = px.histogram(df1, x="Governorate", y="Demolished Structures", color='Year', template='plotly_dark', title='Recent Demolished Structures in West Bank')
+fig2 = px.histogram(df1, x="Governorate", y="Demolished Structures", color='Year', template='plotly_dark', title='Recent Demolished Structures in West Bank (2023-2024)')
 fig3 = px.histogram(df, x="Governorate", y="Demolished Structures", template='plotly_dark', title='Demolished Structures in West Bank since 2009')
 fig4 = px.line(df2, x="Date", y=df2.columns[2:5], template='plotly_dark',
               hover_data={"Date": "|%B %d, %Y"},
@@ -91,7 +91,7 @@ def create_card(data_text, image_src, data_df, column_name, style=None):
   return [card_body]
 
 west_bank_2009_idp = create_card(
-    data_text="Total Internally Displaced People",
+    data_text="IDPs",
     image_src="../assets/idp.svg",
     data_df=df,
     column_name="IDPs",
@@ -99,7 +99,7 @@ west_bank_2009_idp = create_card(
 )
 
 west_bank_2009_ds = create_card(
-    data_text="Total demolished structures",
+    data_text="Demolished Struc",  # Abbreviation for Demolished Structures
     image_src="../assets/broken-house.svg",
     data_df=df,
     column_name="Demolished Structures",
@@ -107,7 +107,7 @@ west_bank_2009_ds = create_card(
 )
 
 west_bank_2009_ap = create_card(
-    data_text="Total affected people",
+    data_text="Affected People",
     image_src="../assets/aff.svg",
     data_df=df,
     column_name="Affected people",
@@ -115,7 +115,7 @@ west_bank_2009_ap = create_card(
 )
 
 west_bank_idp = create_card(
-    data_text="Total Internally Displaced People",
+    data_text="IDPs",
     image_src="../assets/idp.svg",
     data_df=df1,
     column_name="IDPs",
@@ -123,7 +123,7 @@ west_bank_idp = create_card(
 )
 
 west_bank_ds = create_card(
-    data_text="Total demolished structures",
+    data_text="Demolished Struc",  # Abbreviation for Demolished Structures
     image_src="../assets/broken-house.svg",
     data_df=df1,
     column_name="Demolished Structures",
@@ -131,7 +131,7 @@ west_bank_ds = create_card(
 )
 
 west_bank_ap = create_card(
-    data_text="Total affected people",
+    data_text="Affected People",
     image_src="../assets/aff.svg",
     data_df=df1,
     column_name="Affected people",
@@ -149,10 +149,10 @@ layout = html.Div(
         dbc.Row([  
             dbc.Col(dbc.Card(west_bank_2009_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  # Adjust padding as needed
             dbc.Col(dbc.Card(west_bank_2009_ds, color="danger", inverse=True)),
-            dbc.Col(dbc.Card(west_bank_2009_ap, color="info", inverse=True), style={'padding-right': '5%'}),  # Adjust padding as needed
+            dbc.Col(dbc.Card(west_bank_2009_ap, color="primary", inverse=True), style={'padding-right': '5%'}),  # Adjust padding as needed
             dbc.Col(dbc.Card(west_bank_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  # Include Gaza_idp card
             dbc.Col(dbc.Card(west_bank_ds, color="danger", inverse=True)),  # Assuming you have a gazastats_ds card
-            dbc.Col(dbc.Card(west_bank_ap, color="info", inverse=True), style={'padding-right': '5%'}),  # Assuming you have a gazastats_ap card
+            dbc.Col(dbc.Card(west_bank_ap, color="primary", inverse=True), style={'padding-right': '5%'}),  # Assuming you have a gazastats_ap card
         ],
             className="mb-4",  
         ),
@@ -160,25 +160,21 @@ layout = html.Div(
         dbc.Row(
             [
                 dbc.Col(html.Div(dcc.Graph(figure=fig)), style={'padding-left': '2%'}),
-                dbc.Col(html.Div(dcc.Graph(figure=fig3))),
+                dbc.Col(html.Div(dcc.Graph(figure=fig1))),
             ], 
-        ),
-        html.Br(),
-        dbc.Row([  
-            # dbc.Col(dbc.Card(west_bank_idp, color="primary", inverse=True), style={'padding-left': '30%'}),
-            # dbc.Col(dbc.Card(west_bank_ds, color="danger", inverse=True)),
-            # dbc.Col(dbc.Card(west_bank_ap, color="info", inverse=True), style={'padding-right': '30%'}),
-        ],
-            className="mb-4",  
         ),
         html.Br(),
         dbc.Row(
             [
-                dbc.Col(html.Div(dcc.Graph(figure=fig1)), style={'padding-left': '2%'}),
-                dbc.Col(html.Div(dcc.Graph(figure=fig2)))
+               dbc.Col(html.Div(dcc.Graph(figure=fig3)), style={'padding-left': '2%'}),
+               dbc.Col(html.Div(dcc.Graph(figure=fig2)))
             ], 
         ),
         html.Br(),
+        dbc.Row(
+            dbc.Col(html.Div(html.H2("""Gaza IDPs and Shelters since 7 October 2023""")
+            , style={'textAlign': 'center','color': 'red'}), style={'padding-bottom': '1%', 'padding-top': '1%'})),
+            html.Br(),
         dbc.Row(
             [
                 dbc.Col(html.Div(dcc.Graph(figure=fig4)), style={'padding-left': '2%'}),
@@ -191,7 +187,11 @@ layout = html.Div(
         #         dbc.Col(html.Div(dcc.Graph(figure=fig6))),
         #     ], 
         # ),
-    ]
+    ],
+    style={
+        'backgroundColor': '#212121',  # Dark background
+        'color': '#fff',  # White text
+    }
 )
 
 if __name__ == "__main__":
