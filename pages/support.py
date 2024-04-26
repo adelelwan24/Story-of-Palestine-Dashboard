@@ -62,7 +62,7 @@ def create_card(image_src, title, description, button_link, button_text, info_li
         withBorder=True,
         shadow="sm",
         radius="md",
-        style={"width": 375, 'height': 375},
+        style={"width": 375, 'height': 390},
     )
 
 layout = dmc.Grid(
