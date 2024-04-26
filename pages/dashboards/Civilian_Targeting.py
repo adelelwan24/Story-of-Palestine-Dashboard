@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-import dash_mantine_components as dmc
+#import dash_mantine_components as dmc
 
 dash.register_page(
     __name__,
@@ -16,7 +16,7 @@ dash.register_page(
 
 ########################################### Processing #############################################
 df = pd.read_excel(r'data/palestine_hrp_civilian_targeting_events_and_fatalities_by_month-year_as-of-17apr2024.xlsx',sheet_name='Data')
-
+#df_1 = pd.read_csv(r'D:\projectDV\Story-of-Palestine-Dashboard\data\fatalities_isr_pse_conflict_2000_to_2023 (Dataset) (1).csv')
 total_fatalities = df['Fatalities'].sum()
 total_events = df['Events'].sum()
 
@@ -31,7 +31,6 @@ def filter_df(df, value):
         df = df[(df['Year'] == 2023)]
     else:
         tmp = df
-
     return tmp
 
 def pie1(df):
@@ -41,13 +40,15 @@ def pie1(df):
                 # color_discrete_sequence=['#ff553b', 'blue'],
                 template='plotly_white')
     
-    fig.update_layout({
-                    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-                    'paper_bgcolor': 'rgba(0,0,0,0)'
-                },
-            font = dict(color = 'white')
-        )
-    
+    fig.update_layout(
+        plot_bgcolor='rgba(0, 0, 0, .53)',
+        paper_bgcolor='rgba(0, 0, 0, .53)',
+        margin=dict(l=50, r=50, t=50, b=50),
+        font=dict(color='white')
+    )
+    #fig.layout.margin = dict(l=40, r=30, t=50, b=40)
+    #html.Br()
+
     return fig
 
 
@@ -58,10 +59,11 @@ def pie2(df):
                 color_discrete_sequence=['#ef553b', '#636efa'],
                 template='plotly_white')
     fig.update_layout({
-            'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-            'paper_bgcolor': 'rgba(0,0,0,0)'
+            'plot_bgcolor': 'rgba(0, 0, 0, 0.53)',
+            'paper_bgcolor': 'rgba(0,0,0,0.53)'
         },
         font = dict(color = 'white'),)
+    
     return fig 
 
 
@@ -227,6 +229,27 @@ def tree1(df):
     # fig.layout.hovermode = True
     return fig
 
+# def tree1(df_1):
+
+#     d = df_1['ammunition'].value_counts()
+#     data = d.to_frame().reset_index()
+#     data.columns = ['Ammunition', 'Deaths']
+
+#     # Create Treemap chart
+#     fig = px.treemap(data, path=['Ammunition'], values='Deaths', custom_data=['Deaths'],
+#                     color_continuous_scale='RdBu',
+#                     title='Most Deaths Causing Ammunition')
+#     fig.update_layout( 
+
+#         plot_bgcolor='rgba(0, 0, 0, .53)',
+#         paper_bgcolor='rgba(0, 0, 0, .53)',
+#         font = dict(color = 'white'))
+#     # this is what I don't like, accessing traces like this
+#     fig.data[0].textinfo = 'label+text+value+current path'
+
+#     fig.layout.hovermode = False
+#     return fig
+
 def map1(df):
         
     governorates = {
@@ -303,7 +326,9 @@ def map1(df):
             pitch=0,
             zoom=6
         )
+
     )
+
     return fig
 
 
@@ -322,10 +347,14 @@ def addCardBody(title, value):
 
 layout = html.Div(
     [       
-        dbc.Row(
-            html.H2("Civilian Trageting(2017 -2024)", style={'textAlign':'center'})
-            ,style = {'padding-bottom' : '2%','padding-top' : '2%'}
-        ),    
+    dbc.Row(
+        html.Div(
+            html.H2("Civilian Targeting (2017-2024)", style={'textAlign': 'center', 'color': 'white'}),
+            style={'border': '2px solid black', 'padding': '10px'}
+        ),
+        style={'padding-bottom': '2%', 'padding-top': '2%'},
+    ),
+  
         dbc.Row(
             [
 
@@ -337,13 +366,18 @@ layout = html.Div(
             ],  
             # style = {'padding-left' : '10%', 'padding-right': '10%'} , 
             justify="center",
-        ),  
+        ),
+        html.Br(),
+
         dbc.Row(
             [
                 dbc.Col(dcc.Graph(figure=pie1(df))),
+                
                 dbc.Col(dcc.Graph(figure=pie2(df))),
             ], 
         ),
+        html.Br(),
+
         dbc.Row(
             [
                 dbc.Col(dcc.Graph(figure=tree1(df))),
@@ -371,6 +405,7 @@ layout = html.Div(
                 # ),
             ]
         ),
+
         dbc.Row(
             [
 
