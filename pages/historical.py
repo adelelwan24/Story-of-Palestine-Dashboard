@@ -1,6 +1,7 @@
 import dash
 from dash import dcc, callback, Input, Output, html
 import dash_mantine_components as dmc
+import dash_bootstrap_components as dbc
 
 
 import pandas as pd
@@ -21,38 +22,44 @@ all_ids = list(story['id'])
 MIN, MAX = min(all_ids), max(all_ids)
 
 
-def left_content(*, title, date, description, image):
+def left_content(*, title, date, description, image, tooltip_text):
+    tooltip = dbc.Tooltip(
+        tooltip_text,
+        target=f"image-tooltip-{image}",
+        placement="auto",
+        # You can customize the appearance of the tooltip here
+        style={"color": "black"},
+    )
 
     return [
-            dmc.Space(h='15px'),
-
-            dmc.Title(title, id='story-title', order=1, className='title-green'),
-
-            dmc.Title(date, id='story-date', order=2,
-                style={
-                    'color': 'red',
-                    '-webkit-text-stroke-width': '1.3px', 
-                    '-webkit-text-stroke-color': 'black',
-                }, align='center'
-            ),
- 
-            html.Img(src=f'assets/story/{image}',  
-                        style={'object-fit': 'contain', 
-                               'height' : '30vh', 'border-radius': '10%'}
-                    ) if image else None,
-
-            dmc.Text(description,
-                # align='center', bg='rgba(0, 0, 0, 0.53)',
-                style={
-                        'color': 'white', 
-                        'width': '75%',
-                        '-webkit-text-stroke-width': '.5px', 
-                        'background' : 'rgba(0, 0, 0, 0.53)'
-                        },
-                    ),
-        ]
+        dmc.Space(h='15px'),
+        dmc.Title(title, id='story-title', order=1, className='title-green'),
+        dmc.Title(date, id='story-date', order=2,
+                   style={'color': 'red',
+                          '-webkit-text-stroke-width': '1.3px',
+                          '-webkit-text-stroke-color': 'black'},
+                   align='center'
+                   ),
+        html.Img(
+            id=f"image-tooltip-{image}",
+            src=f'assets/story/{image}',
+            style={'object-fit': 'contain',
+                   'height': '30vh', 'border-radius': '10%'}
+        ),
+        tooltip,
+        dmc.Text(description,
+                  style={'color': 'white',
+                         'width': '75%',
+                         '-webkit-text-stroke-width': '.5px',
+                         'background': 'rgba(0, 0, 0, 0.53)'
+                         },
+                  ),
+    ]
 
 def right_content(*, image):
+        
+
+    
     return [
         dmc.Stack([
             dmc.Badge("Palestine", color="green", size='md', fullWidth=True),
@@ -153,6 +160,7 @@ def update_historical_content(value):
         description=df['notes'],
         # image=img,
         image=df['picture1'].values[0],
+        tooltip_text=df['DIS1'].values[0]
         # image=None
     ), 'hide'
 
