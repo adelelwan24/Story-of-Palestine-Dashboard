@@ -10,24 +10,20 @@ lottie_name = 'flag.json'
 options = dict(loop=True, autoplay=True)
 
 support_data = pd.read_excel('data/SupportPageData.xlsx')
-
+support_data2 = pd.read_excel('data/SupportData_2.xlsx')
 
 dash.register_page(
     __name__,
-    # path='/support',
-    # image='home.png',
-    # image='free-palestine.png',
     title='Story Of Palestine | Support',
     description=    "Stop the attacks on Gaza!"
                     "Take action for Palestine"
 )
 
 # Function to create a dmc.Card with customizable content
-def create_card(image_src, title, description, button_link, button_text="Donate", button_color="blue"):
+def create_card(image_src, title, description, button_link, button_text, info_link=None, button_color="blue"):
     return dmc.Card(
         children=[
             dmc.CardSection(
-                # dmc.Image(src=image_src, height=160),
                 dmc.Center(
                     html.Img(src=image_src, height=160, width=160,
                          style={
@@ -42,7 +38,7 @@ def create_card(image_src, title, description, button_link, button_text="Donate"
                 dmc.Group(
                     [
                         dmc.Text(title, weight=500),
-                        dmc.Badge("On Sale", color="red", variant="light"),
+                        dmc.Badge(dmc.Anchor("info", href=info_link), color="red", variant="light") if info_link is not None else None
                     ],
                     position="apart",
                     mt="md",
@@ -80,19 +76,22 @@ layout = dmc.Grid(
                             [
                                 dmc.Text(
                                     children=[
-                                        "Stop the attacks on Gaza!",
+                                        "Stop the attacks on Gaza!, Take action for Palestine",
                                     ],
                                     style={'color': 'gray', 'width': '100%'},
                                 ),
-                                dmc.Text(
-                                    children=[
-                                     "Take action for Palestine"                                    
-                                     ],
-                                    style={'color': 'gray', 'width': '100%'},
+                                dmc.Select(
+                                    id='support-dropdown',
+                                    data=["Support", "Act"],
+                                    searchable=True,
+                                    value='Support',
+                                    nothingFound="No options found",
+                                    style={"width": 200},
                                 ),
-
                             ]
                         ),
+                        dmc.Title('Support Palestine', 
+                                  style={'color': 'red'}, align='center', mt=30),
                     ],
                     align='center',
                     # justify='flex-end',
@@ -104,30 +103,55 @@ layout = dmc.Grid(
         ),
         dmc.Col(
             [
-                #create_card(image_src= f"assets/support/{support_data['logo'][0]}", title=support_data['organization'][0], description=support_data['description'][0], button_link=support_data['donationLink'][0])
                 dmc.Group(
-                    [
-                        # dmc.Text(support_data['organization'][0], weight=500),
-                        # dmc.Badge("On Sale", color="red", variant="light"),
+                    id='card-group',
+                    children = [  
                         create_card(image_src=f"assets/support/{support_data['logo'][i]}", 
                             title=support_data['organization'][i], 
                             description=support_data['description'][i], 
-                            button_link=support_data['donationLink'][i]) 
-
-                        for i in range(10)
+                            button_link=support_data['donationLink'][i],
+                            info_link=support_data['learnMoreLink'][i],
+                            button_text="Donate") 
+                        for i in range(len(support_data))
                     ],
-                    # position="apart",
                     position="center",
                     mt="md",
                     mb="md", spacing=20,
                 )
 
             ], md=9, lg=12
+
         ),
     ],
     id='support-grid',
     className='hide',
 )
+
+@callback(
+    Output('card-group', 'children'),
+    Output('card-group', 'className', allow_duplicate=True),
+    Input('support-dropdown', 'value'),
+    prevent_initial_call=True
+)
+def update_card_group(value):
+    if value == 'Support':
+        return [
+                        create_card(image_src=f"assets/support/{support_data['logo'][i]}", 
+                            title=support_data['organization'][i], 
+                            description=support_data['description'][i], 
+                            button_link=support_data['donationLink'][i],
+                            info_link=support_data['learnMoreLink'][i],
+                            button_text="Donate") 
+                        for i in range(len(support_data))
+                ], 'hide'
+    elif value == 'Act':
+        return [    create_card(image_src=f"assets/support/{support_data2['logo'][i]}", 
+                        title=support_data2['organization'][i], 
+                        description=support_data2['description'][i], 
+                        button_link=support_data2['link'][i],
+                        button_text="Act") 
+                        for i in range(len(support_data2))
+                ], 'hide'
 
 clientside_callback(
     """
@@ -138,3 +162,11 @@ clientside_callback(
     Output('support-grid', 'className'),
     Input('support-grid', 'className'),
 )
+
+@callback(
+    Output('card-group', 'className', allow_duplicate=True),
+    Input('card-group', 'className'),
+    prevent_initial_call=True
+)
+def animation(_):
+    return 'fade-in'
