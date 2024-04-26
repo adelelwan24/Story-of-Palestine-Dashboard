@@ -1,7 +1,9 @@
-import dash
-import json
 import os
-from dash import html, dcc, Output, Input, callback
+
+import dash
+from dash import html
+import dash_bootstrap_components as dbc
+
 from flask import send_from_directory, request
 
 from assets.footer import footer
@@ -12,6 +14,7 @@ app = dash.Dash(
     __name__,
     title='Story of Palestine',
     use_pages=True,
+    external_stylesheets=[dbc.themes.DARKLY],
     # update_title=False,
     # suppress_callback_exceptions=True,
     # prevent_initial_callbacks=True,

@@ -1,18 +1,39 @@
 import dash
-from dash import html, dcc, callback, Input, Output, State, ALL, no_update
+from dash import callback, Input, Output, State, ALL
 import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc
 from dash_iconify import DashIconify
 
 all_icons = [
+    #### Home Page
     'game-icons:globe',
+    
+    #### Historical Events(story)
     'mdi:events',
-    'simple-line-icons:rocket',
-    'game-icons:life-support'
+
+    #### Civilian Trageting Dashboard
+    'game-icons:target-dummy',
+    # 'game-icons:targeting',
+    # 'mdi:target',
+
+    #### Internally Displaced People Dashboard
+    'emojione-monotone:family-man-woman-girl-boy',
+    # 'pepicons-pencil:people',
+    # 'raphael:people',
+
+    #### support
+    'game-icons:life-support',
+
+    #### Extra Graphs
+    'codicon:graph-line',
+    'entypo:bar-graph',
+    'mdi:graph-line',
+    'mdi:graph-pie',
 ]
 
 
 def navbar():
+    print(dash.page_registry.keys())
     return dmc.Grid(
         [
             dmc.ActionIcon(

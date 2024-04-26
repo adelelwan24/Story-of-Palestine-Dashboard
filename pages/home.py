@@ -15,11 +15,11 @@ options = dict(loop=True, autoplay=True)
 dash.register_page(
     __name__,
     path='/',
-    image='home.png',
-    # image='free-palestine.png',
+    image='free-palestine.png',
     title='Story Of Palestine | Home',
-    description='Explore the world of space exploration through a 3D rotating globe, showcasing '
-                'the number of launches by country since the dawn of the space age'
+    description='Dive into the evolution of the Palestinian case with brief historical key events...'
+                '',
+    order=0,
 )
 
 layout = dmc.Grid(

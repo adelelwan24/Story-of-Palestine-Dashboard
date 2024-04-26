@@ -10,6 +10,9 @@ story = pd.read_excel('data/story.xlsx')
 dash.register_page(
     __name__,
     title='Story Of Palestine | Historical',
+    description="Dive into the evolution of the Palestinian case with brief historical key events...",
+    image='palestinian-map.png',
+    order=1,
 )
 
 all_years = list(story['year'])

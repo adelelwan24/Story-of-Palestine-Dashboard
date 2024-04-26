@@ -16,7 +16,8 @@ dash.register_page(
     __name__,
     title='Story Of Palestine | Support',
     description=    "Stop the attacks on Gaza!"
-                    "Take action for Palestine"
+                    "Take action for Palestine",
+    order=4,
 )
 
 # Function to create a dmc.Card with customizable content
