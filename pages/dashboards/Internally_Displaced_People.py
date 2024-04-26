@@ -37,10 +37,10 @@ fig = px.scatter(
     title='IDPs in West Bank Since 2009',
 )
 
-fig.update_layout(
-        font = dict(color = 'white'),
-        plot_bgcolor='rgba(0, 0, 0, 0.53)',
-        paper_bgcolor='rgba(0, 0, 0, 0.53)',)
+# fig.update_layout(
+#         font = dict(color = 'white'),
+#         plot_bgcolor='rgba(0, 0, 0, 0.53)',
+#         paper_bgcolor='rgba(0, 0, 0, 0.53)',)
 
 fig1 = px.scatter(
     df1,
@@ -71,162 +71,72 @@ figures = {'fig': fig, 'fig1': fig1, 'fig2': fig2, 'fig3': fig3, 'fig4': fig4, '
 for name, figure in figures.items():
     center_title(figure)
 
+import dash_bootstrap_components as dbc
+from dash import html
 
-West_bank_2009_idp = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/idp.svg", className="idp", style={'width': '100%'}),
-            html.H5(df['IDPs'].sum(), className="card-title"),
-            html.P(
-                "Total Internally Displaced People",
-                className="card-text",
-            ),
-        ]
-    )  
-]
+def create_card(data_text, image_src, data_df, column_name, style=None):
 
-West_bank_2009_ds = [
-    dbc.CardBody(
-        [   
-            html.Img(src="../assets/broken-house.svg", className="ds", style={'width': '100%'}),
-            html.H5(df['Demolished Structures'].sum(), className="card-title"),
-            html.P(
-                "Total demolished structures",
-                className="card-text",
-            ),
-        ]
-    )
-]
+  # Extract data from DataFrame
+  data_value = data_df[column_name].sum()
 
-West_bank_2009_ap = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/aff.svg", className="card-img-top", style={'width': '100%'}),
-            html.H5(df['Affected people'].sum(), className="card-title", style={'text-align': 'center'} ),  # Example: Change the number
-            html.P(
-                "Total affected people",  # Example: Change the text
-                className="card-text",
-            ),
-        ]
-    )
-]
+  # Create card body with image, title, and description
+  card_body = dbc.CardBody(
+      [
+          html.Img(src=image_src, className="card-img-top", style={'width': '100%'}),
+          html.H5(data_value, className="card-title", style=style),
+          html.P(data_text, className="card-text"),
+      ]
+  )
 
-West_bank_idp = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/idp.svg", className="idp", style={'width': '100%'}),
-            html.H5(df1['IDPs'].sum(), className="card-title"),
-            html.P(
-                "Total Internally Displaced People",
-                className="card-text",
-            ),
-        ]
-    )  
-]
+  return [card_body]
 
-West_bank_ds = [
-    dbc.CardBody(
-        [   
-            html.Img(src="../assets/broken-house.svg", className="ds", style={'width': '100%'}),
-            html.H5(df1['Demolished Structures'].sum(), className="card-title"),
-            html.P(
-                "Total demolished structures",
-                className="card-text",
-            ),
-        ]
-    )
-]
+west_bank_2009_idp = create_card(
+    data_text="Total Internally Displaced People",
+    image_src="../assets/idp.svg",
+    data_df=df,
+    column_name="IDPs",
+    style={'text-align': 'center'}
+)
 
-West_bank_ap = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/aff.svg", className="card-img-top", style={'width': '100%'}),
-            html.H5(df1['Affected people'].sum(), className="card-title", style={'text-align': 'center'} ),  # Example: Change the number
-            html.P(
-                "Total affected people",  # Example: Change the text
-                className="card-text",
-            ),
-        ]
-    )
-]
+west_bank_2009_ds = create_card(
+    data_text="Total demolished structures",
+    image_src="../assets/broken-house.svg",
+    data_df=df,
+    column_name="Demolished Structures",
+    style={'text-align': 'center'}
+)
 
-Gaza_idp = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/idp.svg", className="idp", style={'width': '100%'}),
-            html.H5(list(df2['IDPs at Shelters'])[-1], className="card-title"),
-            html.P(
-                "Total Internally displaced people at shelters",
-                className="card-text",
-            ),
-        ]
-    )  
-]
+west_bank_2009_ap = create_card(
+    data_text="Total affected people",
+    image_src="../assets/aff.svg",
+    data_df=df,
+    column_name="Affected people",
+    style={'text-align': 'center'}  # Center align the title
+)
 
-Gaza_idp_un = [
-    dbc.CardBody(
-        [   
-            html.Img(src="../assets/unrwa.svg", className="ds", style={'width': '100%'}),
-            html.H5(df2['IDPs at UNRWA Shelters'].sum(), className="card-title"),
-            html.P(
-                "Total IDPs at UNRWA shelters",
-                className="card-text",
-            ),
-        ]
-    )
-]
+west_bank_idp = create_card(
+    data_text="Total Internally Displaced People",
+    image_src="../assets/idp.svg",
+    data_df=df1,
+    column_name="IDPs",
+    style={'text-align': 'center'}
+)
 
-Gaza_idp_go = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/government.svg", className="card-img-top", style={'width': '100%'}),
-            html.H5(df2['IDPs at Government Shelters'].sum(), className="card-title", style={'text-align': 'center'} ),  # Example: Change the number
-            html.P(
-                "Total IDPs at Government Shelters",  # Example: Change the text
-                className="card-text",
-            ),
-        ]
-    )
-]
+west_bank_ds = create_card(
+    data_text="Total demolished structures",
+    image_src="../assets/broken-house.svg",
+    data_df=df1,
+    column_name="Demolished Structures",
+    style={'text-align': 'center'}
+)
 
-Gaza_shelter = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/shelter.svg", className="idp", style={'width': '100%'}),
-            html.H5(df2['Number of Shelters'].sum(), className="card-title"),
-            html.P(
-                "Total number of shelters",
-                className="card-text",
-            ),
-        ]
-    )  
-]
-
-Gaza_un_sh = [
-    dbc.CardBody(
-        [   
-            html.Img(src="../assets/unrwa.svg", className="ds", style={'width': '100%'}),
-            html.H5(df2['UNRWA Shelters'].sum(), className="card-title"),
-            html.P(
-                "Total number of UNRWA shelters",
-                className="card-text",
-            ),
-        ]
-    )
-]
-
-Gaza_go_sh = [
-    dbc.CardBody(
-        [
-            html.Img(src="../assets/gshelter.svg", className="card-img-top", style={'width': '100%'}),
-            html.H5(df2['Government Shelters'].sum(), className="card-title", style={'text-align': 'center'} ),  # Example: Change the number
-            html.P(
-                "Total number of government shelters",  # Example: Change the text
-                className="card-text",
-            ),
-        ]
-    )
-]
+west_bank_ap = create_card(
+    data_text="Total affected people",
+    image_src="../assets/aff.svg",
+    data_df=df1,
+    column_name="Affected people",
+    style={'text-align': 'center'}  # Center align the title
+)
 
 layout = html.Div(
     [   
@@ -237,9 +147,12 @@ layout = html.Div(
             , style={'textAlign': 'center','color': 'red'}), style={'padding-bottom': '1%', 'padding-top': '1%'})),
         
         dbc.Row([  
-            dbc.Col(dbc.Card(West_bank_2009_idp, color="primary", inverse=True), style={'padding-left': '30%'}),
-            dbc.Col(dbc.Card(West_bank_2009_ds, color="danger", inverse=True)),
-            dbc.Col(dbc.Card(West_bank_2009_ap, color="info", inverse=True), style={'padding-right': '30%'}),
+            dbc.Col(dbc.Card(west_bank_2009_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  # Adjust padding as needed
+            dbc.Col(dbc.Card(west_bank_2009_ds, color="danger", inverse=True)),
+            dbc.Col(dbc.Card(west_bank_2009_ap, color="info", inverse=True), style={'padding-right': '5%'}),  # Adjust padding as needed
+            dbc.Col(dbc.Card(west_bank_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  # Include Gaza_idp card
+            dbc.Col(dbc.Card(west_bank_ds, color="danger", inverse=True)),  # Assuming you have a gazastats_ds card
+            dbc.Col(dbc.Card(west_bank_ap, color="info", inverse=True), style={'padding-right': '5%'}),  # Assuming you have a gazastats_ap card
         ],
             className="mb-4",  
         ),
@@ -252,9 +165,9 @@ layout = html.Div(
         ),
         html.Br(),
         dbc.Row([  
-            dbc.Col(dbc.Card(West_bank_idp, color="primary", inverse=True), style={'padding-left': '30%'}),
-            dbc.Col(dbc.Card(West_bank_ds, color="danger", inverse=True)),
-            dbc.Col(dbc.Card(West_bank_ap, color="info", inverse=True), style={'padding-right': '30%'}),
+            # dbc.Col(dbc.Card(west_bank_idp, color="primary", inverse=True), style={'padding-left': '30%'}),
+            # dbc.Col(dbc.Card(west_bank_ds, color="danger", inverse=True)),
+            # dbc.Col(dbc.Card(west_bank_ap, color="info", inverse=True), style={'padding-right': '30%'}),
         ],
             className="mb-4",  
         ),
@@ -266,24 +179,9 @@ layout = html.Div(
             ], 
         ),
         html.Br(),
-        # dbc.Row([  
-        #     dbc.Col(dbc.Card(Gaza_idp, color="primary", inverse=True), style={'padding-left': '30%'}),
-        #     dbc.Col(dbc.Card(Gaza_idp_un, color="danger", inverse=True)),
-        #     dbc.Col(dbc.Card(Gaza_idp_go, color="info", inverse=True), style={'padding-right': '30%'}),
-        # ], 
-        #     className="mb-4",  
-        # ),
-        html.Br(),
-        dbc.Row([  
-            dbc.Col(dbc.Card(Gaza_shelter, color="primary", inverse=True), style={'padding-left': '30%'}),
-            dbc.Col(dbc.Card(Gaza_un_sh, color="danger", inverse=True)),
-            dbc.Col(dbc.Card(Gaza_go_sh, color="info", inverse=True), style={'padding-right': '30%'}),
-        ], 
-            className="mb-4",  
-        ),
         dbc.Row(
             [
-                dbc.Col(html.Div(dcc.Graph(figure=fig4))),
+                dbc.Col(html.Div(dcc.Graph(figure=fig4)), style={'padding-left': '2%'}),
                 dbc.Col(html.Div(dcc.Graph(figure=fig5)))
             ], 
         ),

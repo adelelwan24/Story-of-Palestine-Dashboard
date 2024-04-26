@@ -171,3 +171,6 @@ clientside_callback(
 )
 def animation(_):
     return 'fade-in'
+
+# link = "dashboard link";
+# text = "Learn more about the story of Palestine, the status of Gaza, Israeli war crimes. Support Palestine! ";
