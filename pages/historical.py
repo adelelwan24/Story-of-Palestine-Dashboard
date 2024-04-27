@@ -33,12 +33,7 @@ def left_content(*, title, date, description, image, tooltip_text):
     return [
         dmc.Space(h='15px'),
         dmc.Title(title, id='story-title', order=1, className='title-green'),
-        dmc.Title(date, id='story-date', order=2, className='title-red',
-                #    style={'color': 'red',
-                #           '-webkit-text-stroke-width': '1.3px',
-                #           '-webkit-text-stroke-color': 'black'},
-                   align='center'
-                   ),
+        dmc.Title(date, id='story-date', order=2, className='title-red', align='center'),
         html.Img(
             id=f"image-tooltip-{image}",
             src=f'assets/story/{image}',
@@ -105,7 +100,6 @@ layout = dmc.Grid(
                                 'display': 'None',
                                 'transform' : 'rotate(90deg)'
                             }} for year, id in zip(all_years, all_ids)},
-                            # marks={str(years):str(years) for years in all_years},
                             
                             tooltip={"always_visible": True, "placement": "bottom",
                                      "style": {"color": "LightSteelBlue", "fontSize": "15px"},
@@ -127,9 +121,7 @@ layout = dmc.Grid(
                     align='center',
                     justify='center',
                     className='right-container',
-                    # spacing='25px',
                     style={'height': '100%'},
-                    # mb=50
                     mx=0,
                     px=0
                 ),
@@ -150,7 +142,6 @@ def update_historical_content(value):
     if value == 0:
         value = story['year'].min()
 
-    # df = story[story['year'] == value]
     df = story[story['id'] == value]
 
     return left_content(
@@ -160,7 +151,6 @@ def update_historical_content(value):
         # image=img,
         image=df['picture1'].values[0],
         tooltip_text=df['DIS1'].values[0]
-        # image=None
     ), 'hide'
 
 
@@ -179,8 +169,6 @@ def animation(_):
     Input('year-slider', 'value'),
 )
 def update_map(value):
-    # if value == 0:
-    #     value = story['year'].min()
     value = story[story['id'] == value]['year'].values[0]
 
     if value > 2014:
