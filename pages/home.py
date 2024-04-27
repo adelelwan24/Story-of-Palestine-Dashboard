@@ -32,7 +32,7 @@ layout = dmc.Grid(
                 # html.Img(src='assets\palestinian-map.png', style={'height' : '70vh'}),
                 dmc.Stack(
                     children=[
-                        dmc.Title('The full story of Palestine..', className='title-green',
+                        dmc.Title('Story Of Palestine....', className='title-green',
                                   style={'color': 'green'}, align='center'),
                         dmc.Center(
                             [
