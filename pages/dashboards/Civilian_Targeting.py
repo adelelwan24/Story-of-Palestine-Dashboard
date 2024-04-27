@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
+from dash_iconify import DashIconify
 
 dash.register_page(
     __name__,
@@ -128,7 +129,7 @@ def lineMonthlyEvents(df, value):
     tmp['Month'] = pd.Categorical(tmp['Month'], categories=months, ordered=True)
     monthly_data = tmp.groupby('Month', observed=False)['Events'].sum().reset_index()
     fig = px.line(monthly_data, x='Month', y=['Events'], markers=True,
-                title=f'Total Monthly Events {value}')
+                title=f'Total Monthly Events in {value}')
 
     # Update layout for better visualization
     fig.update_layout(title_x=0.5,
@@ -291,7 +292,6 @@ layout = html.Div(
             html.Br(),
             html.H2("Civilian Targeting (2017-2024)", 
                     style={'textAlign': 'center', 'color': 'red'},
-                    # className='title-red'
                     ),        
                 ]
             ),
@@ -323,8 +323,31 @@ layout = html.Div(
         ),  
         dbc.Row(
             [
-                dbc.Col(dcc.Dropdown(['All Sectors', 'Gaza Strip', 'West Bank'], 'All Sectors', id='dropdown-1', placeholder='Select Sector...',
-                                     style={'color' : 'black', 'margin' : '20px'} ), width={"size": 6, "offset": 3}),
+                dbc.Col([
+                    # dcc.Dropdown(['All Sectors', 'Gaza Strip', 'West Bank'], 'All Sectors', id='dropdown-1', placeholder='Select Sector...',
+                                    #  style={'color' : 'black', 'margin' : '20px'} ), 
+                    html.Br(),
+                    dmc.Select(
+                                    id='dropdown-1',
+                                    allowDeselect=True,
+                                    data=["All Sectors", "Gaza Stipe", 'West Bank'],
+                                    searchable=True,
+                                    label='Select Sector...',
+                                    # description='Select a sector to filter with...',
+                                    placeholder='Select a sector to filter with...',
+                                    value='All Sectors',
+                                    # variant='default',
+                                    variant='filled',
+                                    nothingFound="No options found",
+                                    # style={"width": 500, 'align' : 'center'},
+                                    style={"width": '100%', 'align' : 'center', 'color' : 'white'},
+                                    styles={'label' : {'color' : 'white'}},
+                                    # w='60%', pos='center',
+                                    icon=DashIconify(icon='solar:city-outline'),
+                                ),
+                                html.Br(),
+                            ], width={"size": 6, "offset": 3}
+                        ),
             ]
         ),
 
@@ -332,7 +355,7 @@ layout = html.Div(
             [
                 dbc.Col(dcc.Graph(figure=bar3(df, 'All Sectors'), id='graph-1'), width=6),
                 dbc.Col(dcc.Graph(figure=bar4(df, 'All Sectors'), id='graph-2'), width=6),
-            ], style={'margin-bottom' : 20}
+            ], style={'margin-bottom' : 20}, id='row-2'
         ),  
         
 
@@ -345,7 +368,7 @@ layout = html.Div(
                 dbc.Col(dcc.Graph(
                    figure=lineMonthlyFatalities(df, 'All Sectors'), 
                     id='graph-4'), width=6),
-            ], 
+            ], id='row-1'
         ),
 
 
@@ -353,7 +376,7 @@ layout = html.Div(
     style={
         'backgroundColor': '#212121',  # Dark background
         'color': '#fff',  # White text
-    }
+    }, 
 )
 
 @callback(
@@ -361,8 +384,27 @@ layout = html.Div(
     Output('graph-2', 'figure'),
     Output('graph-3', 'figure'),
     Output('graph-4', 'figure'),
+    Output('row-1', 'className'),
+    Output('row-2', 'className'),
     Input('dropdown-1', 'value')
 )
 def dropdown_selection(value):
-    return bar3(df, value), bar4(df, value), lineMonthlyEvents(df, value), lineMonthlyFatalities(df, value)
+    return (bar3(df, value), bar4(df, value), 
+            lineMonthlyEvents(df, value), lineMonthlyFatalities(df, value),
+            'hide', 'hide')
 
+@callback(
+    Output('row-1', 'className', allow_duplicate=True),
+    Input('row-1', 'className'),
+    prevent_initial_call=True
+)
+def animation(_):
+    return 'fade-in'
+
+@callback(
+    Output('row-2', 'className', allow_duplicate=True),
+    Input('row-2', 'className'),
+    prevent_initial_call=True
+)
+def animation(_):
+    return 'fade-in'
