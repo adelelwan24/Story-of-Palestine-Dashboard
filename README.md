@@ -12,6 +12,7 @@ Visit the website at [Story-Of-Palestine](https://story-of-palestine-dashboard.o
 
 <table>
   <tr>
+    <td>Page</td>
     <td>Home</td>
     <td>Historical</td>
     <td>Civilian Targeting</td>
@@ -27,10 +28,6 @@ Visit the website at [Story-Of-Palestine](https://story-of-palestine-dashboard.o
     <td>Provides different ways for supporting Palestine, empowering users to take actionable steps towards making a difference. 🌟</td>
   </tr>
 </table>
-
-## 🤝🏻 Contributing
-
-If you would to collaborate on creating or amending content on Stand-With-Palestine.org, check out the [collaboration form](https://tally.so/r/mDNNKN).
 
 **Folder Structure:**
 
@@ -70,10 +67,11 @@ If you would to collaborate on creating or amending content on Stand-With-Palest
 </table>
 
 **Running the Project:**
+To run the project, follow these steps:
 
-`npm install` then `npm start`
-
-Please propose any contributions through the TFP liaise [Discord channel](https://techforpalestine.org/discord-invite) (and/or Github issues) before you work on a PR. All PRs should be made to the dev branch.
+1. Clone this repository to your local machine.
+2. Install the dependencies in the requirement file.
+3. Navigate to the `app.py`  and run it.
 
 ## 👥 Collaborators
 
