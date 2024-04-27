@@ -114,7 +114,7 @@ layout = dmc.Grid(
                         ),
                     ],
                     mt=40,
-                    w='60%',
+                    w='80%',
                     style= {'bottom': 20}
                 ),
             ],
