@@ -16,8 +16,10 @@ app = dash.Dash(
     use_pages=True,
     external_stylesheets=[dbc.themes.DARKLY],
     # update_title=False,
-    # suppress_callback_exceptions=True,
-    # prevent_initial_callbacks=True,
+    suppress_callback_exceptions=True,
+    prevent_initial_callbacks=True,
+    meta_tags=[{'name': 'viewport',
+                'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'}]
 )
 
 server = app.server
