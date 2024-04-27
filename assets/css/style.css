@@ -1,5 +1,6 @@
 body {
 /* background: rgb(11,6,84); */
+background: #212121;
 /* background-image:  url("../peace-sign.jpg"); */
 /* background-image:  url("../collage.jpg"); */
 /* background-image:  url("../mosque.jpg"); */
@@ -18,8 +19,30 @@ background-attachment: fixed;
 }
 
 .title-green {
+    /* padding-top : 15px; */
     color: green;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     text-shadow: 0 0 3px
+}
+
+.title-red {
+    color: red;
+    /* color: darkred; */
+    text-align: center;
+    /* font-weight: bold;
+    -webkit-text-stroke-width: 1px; 
+    -webkit-text-stroke-color: darkred;
+    text-shadow: 0 0 1px */
+}
+.ban {
+    /* color: red; */
+    color: darkred;
+    text-align: center;
+    font-weight: bolder;
+    /* -webkit-text-stroke-width: .2px;  */
+    /* -webkit-text-stroke-color:  darkred; */
+    /* -webkit-text-stroke-color:  whitesmoke; */
+    /* -webkit-text-stroke-color: rgb(117, 12, 12); */
+    /* text-shadow: 0 0 1px */
 }
