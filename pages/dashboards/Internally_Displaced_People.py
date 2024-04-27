@@ -37,11 +37,6 @@ fig = px.scatter(
     title='IDPs in West Bank Since 2009',
 )
 
-# fig.update_layout(
-#         font = dict(color = 'white'),
-#         plot_bgcolor='rgba(0, 0, 0, 0.53)',
-#         paper_bgcolor='rgba(0, 0, 0, 0.53)',)
-
 fig1 = px.scatter(
     df1,
     x="Demolished Structures",
@@ -53,17 +48,24 @@ fig1 = px.scatter(
     title='Recent IDPs in West Bank (2023-2024)',
 )
 
-fig2 = px.histogram(df1, x="Governorate", y="Demolished Structures", color='Year', template='plotly_dark', title='Recent Demolished Structures in West Bank (2023-2024)')
-fig3 = px.histogram(df, x="Governorate", y="Demolished Structures", template='plotly_dark', title='Demolished Structures in West Bank since 2009')
+fig2 = px.histogram(df1, x="Governorate", y="Demolished Structures", 
+                    color='Year', template='plotly_dark', 
+                    title='Recent Demolished Structures in West Bank (2023-2024)')
+
+fig3 = px.histogram(df, x="Governorate", y="Demolished Structures", 
+                    template='plotly_dark', title='Demolished Structures in West Bank since 2009')
+
 fig4 = px.line(df2, x="Date", y=df2.columns[2:5], template='plotly_dark',
               hover_data={"Date": "|%B %d, %Y"},
               title='Gaza IDPs')
 # Add title to y-axis
 add_yaxis_title(fig4, "Number of IDPs")
 
+
 fig5 = px.bar(df2, x='Date', y=df2.columns[5:8], template='plotly_dark',
                       title='Gaza Shelters')
 add_yaxis_title(fig5, "Number of Shelters")
+
 # Store figures in a dictionary
 figures = {'fig': fig, 'fig1': fig1, 'fig2': fig2, 'fig3': fig3, 'fig4': fig4, 'fig5': fig5}
 
@@ -71,8 +73,6 @@ figures = {'fig': fig, 'fig1': fig1, 'fig2': fig2, 'fig3': fig3, 'fig4': fig4, '
 for name, figure in figures.items():
     center_title(figure)
 
-import dash_bootstrap_components as dbc
-from dash import html
 
 def create_card(data_text, image_src, data_df, column_name, style=None):
 
@@ -139,20 +139,17 @@ west_bank_ap = create_card(
 )
 
 layout = html.Div(
-    [   
-        # dbc.Spinner(color="primary"),
-        
-        # dbc.Row(dbc.Col(html.Div(html.H2("IDPs in Gaza and WestBank"), style={'textAlign': 'center','color': 'red'}), style={'padding-bottom': '1%', 'padding-top': '1%'})),
+    [   html.Br(),
         dbc.Row(dbc.Col(html.Div(html.H2("""Internally Displaced People""")
             , style={'textAlign': 'center','color': 'red'}), style={'padding-bottom': '1%', 'padding-top': '1%'})),
         
         dbc.Row([  
-            dbc.Col(dbc.Card(west_bank_2009_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  # Adjust padding as needed
+            dbc.Col(dbc.Card(west_bank_2009_idp, color="primary", inverse=True), style={'padding-left': '5%'}),
             dbc.Col(dbc.Card(west_bank_2009_ds, color="danger", inverse=True)),
-            dbc.Col(dbc.Card(west_bank_2009_ap, color="primary", inverse=True), style={'padding-right': '5%'}),  # Adjust padding as needed
-            dbc.Col(dbc.Card(west_bank_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  # Include Gaza_idp card
-            dbc.Col(dbc.Card(west_bank_ds, color="danger", inverse=True)),  # Assuming you have a gazastats_ds card
-            dbc.Col(dbc.Card(west_bank_ap, color="primary", inverse=True), style={'padding-right': '5%'}),  # Assuming you have a gazastats_ap card
+            dbc.Col(dbc.Card(west_bank_2009_ap, color="primary", inverse=True), style={'padding-right': '5%'}), 
+            dbc.Col(dbc.Card(west_bank_idp, color="primary", inverse=True), style={'padding-left': '5%'}),  
+            dbc.Col(dbc.Card(west_bank_ds, color="danger", inverse=True)), 
+            dbc.Col(dbc.Card(west_bank_ap, color="primary", inverse=True), style={'padding-right': '5%'}), 
         ],
             className="mb-4",  
         ),
@@ -181,18 +178,9 @@ layout = html.Div(
                 dbc.Col(html.Div(dcc.Graph(figure=fig5)))
             ], 
         ),
-        # html.Br(),
-        # dbc.Row(
-        #     [
-        #         dbc.Col(html.Div(dcc.Graph(figure=fig6))),
-        #     ], 
-        # ),
     ],
     style={
         'backgroundColor': '#212121',  # Dark background
         'color': '#fff',  # White text
     }
 )
-
-if __name__ == "__main__":
-    app.run_server(use_reloader=True)

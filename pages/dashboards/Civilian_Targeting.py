@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-#import dash_mantine_components as dmc
+import dash_mantine_components as dmc
 
 dash.register_page(
     __name__,
@@ -16,10 +16,21 @@ dash.register_page(
 
 ########################################### Processing #############################################
 df = pd.read_excel(r'data/palestine_hrp_civilian_targeting_events_and_fatalities_by_month-year_as-of-17apr2024.xlsx',sheet_name='Data')
-#df_1 = pd.read_csv(r'D:\projectDV\Story-of-Palestine-Dashboard\data\fatalities_isr_pse_conflict_2000_to_2023 (Dataset) (1).csv')
 total_fatalities = df['Fatalities'].sum()
 total_events = df['Events'].sum()
 
+months = ['January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December']
 
 ########################################### Graphs #################################################
 def filter_df(df, value):
@@ -33,7 +44,7 @@ def filter_df(df, value):
         tmp = df
     return tmp
 
-def pie1(df):
+def pieEvents(df):
     admin1_sum = df.groupby('Admin1')['Events'].sum().reset_index()
     fig = px.pie(admin1_sum, values='Events', names='Admin1',
                 title='Events Distributions',
@@ -41,27 +52,31 @@ def pie1(df):
                 template='plotly_white')
     
     fig.update_layout(
+        title_x=0.5,
         plot_bgcolor='rgba(0, 0, 0, .53)',
         paper_bgcolor='rgba(0, 0, 0, .53)',
-        margin=dict(l=50, r=50, t=50, b=50),
+        # margin=dict(l=50, r=50, t=50, b=50),
         font=dict(color='white')
     )
     #fig.layout.margin = dict(l=40, r=30, t=50, b=40)
-    #html.Br()
-
     return fig
 
 
-def pie2(df):
+def pieFatalities(df):
     admin1_sum = df.groupby('Admin1')['Fatalities'].sum().reset_index()
     fig = px.pie(admin1_sum, values='Fatalities', names='Admin1',
                 title='Fatalities Distribution',
                 color_discrete_sequence=['#ef553b', '#636efa'],
                 template='plotly_white')
+    
+    # order of legend is reversed 
+    fig.update_layout(legend_traceorder="reversed"),
+    fig.update_layout(title_x=0.5),
     fig.update_layout({
             'plot_bgcolor': 'rgba(0, 0, 0, 0.53)',
             'paper_bgcolor': 'rgba(0,0,0,0.53)'
         },
+        # margin=dict(l=50, r=50, t=50, b=50),
         font = dict(color = 'white'),)
     
     return fig 
@@ -76,19 +91,13 @@ def bar3(df, value):
                 title=f'Sum of Fatalities in {value}',
                 template='plotly_white')
     
-        # Rotate x-axis labels for better readability
+    # Rotate x-axis labels for better readability
+    fig.update_layout(title_x=0.5),
     fig.update_layout(xaxis_tickangle=-45,
-                       
-                    width=600,  # Set the width of the plot
-                    height=400,  # Set the height of the plot
                     plot_bgcolor='rgba(0, 0, 0, 0)',
-                    paper_bgcolor='rgba(0, 0, 0, 0.53)'
-                    )
-
-    # Show the plot
-    fig.update_layout(
-        font = dict(color = 'white'),
-        legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  
+                    paper_bgcolor='rgba(0, 0, 0, 0.53)',
+                    font = dict(color = 'white'),
+                    legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  
     )
 
     return fig
@@ -102,123 +111,65 @@ def bar4(df, value):
                 title=f'Sum of Events Caused in {value}',
                 template='plotly_white')
 
-    # Rotate x-axis labels for better readability
-    fig.update_layout(xaxis_tickangle=-45,
-                       
-                    width=600,  # Set the width of the plot
-                    height=400,  # Set the height of the plot
+    fig.update_layout(title_x=0.5,
+                    xaxis_tickangle=-45,
                     plot_bgcolor='rgba(0, 0, 0, 0)',
-                    paper_bgcolor='rgba(0, 0, 0, 0.53)'
-                    )
-
-    # Show the plot
-    fig.update_layout(
-        font = dict(color = 'white'),
-        legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  
+                    paper_bgcolor='rgba(0, 0, 0, 0.53)',
+                    font = dict(color = 'white'),
+                    legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  
     )
 
     return fig
 
-def line3(df, value):
+
+def lineMonthlyEvents(df, value):
     tmp = filter_df(df, value)
 
-
-    monthly_data = tmp.groupby('Month')['Fatalities'].sum().reset_index()
-    fig = px.line(monthly_data, x='Month', y=['Fatalities'], markers=True,
-                title='Monthly Fatalities')
-
-    # Update layout for better visualization
-    fig.update_layout(
-        font = dict(color = 'white'),
-        xaxis_title='Month',
-        yaxis_title='Count',
-        #xaxis={'categoryorder': 'array', 'categoryarray': month_names},
-        width=600,  # Set the width of the plot
-        height=400,  # Set the height of the plot
-        plot_bgcolor='rgba(0, 0, 0, 0)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  # Place legend inside with white background
-
-    )
-    return fig
-
-def line4(df, value):
-    tmp = filter_df(df, value)
-
-    monthly_data = tmp.groupby('Month')['Events'].sum().reset_index()
+    tmp['Month'] = pd.Categorical(tmp['Month'], categories=months, ordered=True)
+    monthly_data = tmp.groupby('Month', observed=False)['Events'].sum().reset_index()
     fig = px.line(monthly_data, x='Month', y=['Events'], markers=True,
-                title='Monthly Fatalities')
+                title=f'Total Monthly Events {value}')
 
     # Update layout for better visualization
-    fig.update_layout(
+    fig.update_layout(title_x=0.5,
         font = dict(color = 'white'),
         xaxis_title='Month',
-        yaxis_title='Count',
-        #xaxis={'categoryorder': 'array', 'categoryarray': month_names},
-        width=600,  # Set the width of the plot
-        height=400,  # Set the height of the plot
-        plot_bgcolor='rgba(0, 0, 0, 0)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  # Place legend inside with white background
+        yaxis_title='Events Count',
+        showlegend=False,
 
-    )
-    return fig
-
-def line5(df, value):
-    tmp = filter_df(df, value)
-
-    monthly_data = tmp.groupby('Month')['Events'].sum().reset_index()
-    fig = px.line(monthly_data, x='Month', y=['Events'], markers=True,
-                title='Monthly Events')
-
-    # Update layout for better visualization
-    fig.update_layout(
-        font = dict(color = 'white'),
-        xaxis_title='Month',
-        yaxis_title='Count',
-        #xaxis={'categoryorder': 'array', 'categoryarray': month_names},
-        width=600,  # Set the width of the plot
-        height=400,  # Set the height of the plot
         plot_bgcolor='rgba(0, 0, 0, 0.53)',
         paper_bgcolor='rgba(0, 0, 0, 0.53)',
-        legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  # Place legend inside with white background
-
     )
     return fig
 
-def line6(df, value):
+def lineMonthlyFatalities(df, value):
     tmp = filter_df(df, value)
 
+    tmp['Month'] = pd.Categorical(tmp['Month'], categories=months, ordered=True)
 
-    monthly_data = tmp.groupby('Month')['Fatalities'].sum().reset_index()
+    monthly_data = tmp.groupby('Month', observed=False)['Fatalities'].sum().reset_index()
     fig = px.line(monthly_data, x='Month', y=['Fatalities'], markers=True,
-                title='Monthly Fatalities')
+                title=f'Total Monthly Fatalities in {value}')
 
     # Update layout for better visualization
-    fig.update_layout(
+    fig.update_layout(title_x=0.5,
         font = dict(color = 'white'),
         xaxis_title='Month',
-        yaxis_title='Count',
-        #xaxis={'categoryorder': 'array', 'categoryarray': month_names},
-        width=600,  # Set the width of the plot
-        height=400,  # Set the height of the plot
+        yaxis_title='Fatalities Count',
         plot_bgcolor='rgba(0, 0, 0, 0.53)',
         paper_bgcolor='rgba(0, 0, 0, 0.53)',
-        legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  # Place legend inside with white background
+        showlegend=False,
+        # legend=dict(x=0, y=1, bgcolor='rgba(255, 255, 255, 0.5)')  # Place legend inside with white background
 
     )
     return fig
 
-def tree1(df):
-    # data_2023 = df[(df['Month'] >= 'January') & (df['Year'] == 2023)]
-    d = df[['Admin1', 'Admin2']].value_counts()
+def tree(df):
 
-    data2 = d.to_frame().reset_index()
-    data2.columns = ['Admin1', 'Admin2', 'Fatalities']
-
-    fig = px.treemap(data2, path=['Admin1', 'Admin2'], values='Fatalities',
-                    title='Where is the most Fataliteies?',
+    fig = px.treemap(df, path=['Admin1', 'Admin2'], values='Events',
+                    title='Where most of civilian targeting ocuurs?',
                     color_continuous_scale='RdBu')
+    fig.update_layout(title_x=0.5),
     
     fig.update_layout( 
         plot_bgcolor='rgba(0, 0, 0, .53)',
@@ -228,27 +179,6 @@ def tree1(df):
     fig.data[0].textinfo = None
     # fig.layout.hovermode = True
     return fig
-
-# def tree1(df_1):
-
-#     d = df_1['ammunition'].value_counts()
-#     data = d.to_frame().reset_index()
-#     data.columns = ['Ammunition', 'Deaths']
-
-#     # Create Treemap chart
-#     fig = px.treemap(data, path=['Ammunition'], values='Deaths', custom_data=['Deaths'],
-#                     color_continuous_scale='RdBu',
-#                     title='Most Deaths Causing Ammunition')
-#     fig.update_layout( 
-
-#         plot_bgcolor='rgba(0, 0, 0, .53)',
-#         paper_bgcolor='rgba(0, 0, 0, .53)',
-#         font = dict(color = 'white'))
-#     # this is what I don't like, accessing traces like this
-#     fig.data[0].textinfo = 'label+text+value+current path'
-
-#     fig.layout.hovermode = False
-#     return fig
 
 def map1(df):
         
@@ -308,9 +238,10 @@ def map1(df):
         text=text,
     ))
 
+
     # Update layout for the map
     fig.update_layout(
-        title='Fataliteies in Palastine',
+        title='Fataliteies in Palastine scaled by radius',
         font = dict(color = 'white'),
         plot_bgcolor='rgba(0, 0, 0, .53)',
         paper_bgcolor='rgba(0, 0, 0, .53)',
@@ -328,6 +259,7 @@ def map1(df):
         )
 
     )
+    fig.update_layout(title_x=0.5),
 
     return fig
 
@@ -335,87 +267,71 @@ def map1(df):
 ########################################### ####### #################################################
 
 
-def addCardBody(title, value):
+def addCardBody(title, value, image_src, style=None):
     return dbc.CardBody(
             [
-                html.H4(title, className="card-title"),
-                html.P(value, className="card-text"),
+                dmc.Container(
+                    html.Img(src=image_src, className="card-img-top", 
+                             height='200px', style={'fit': 'cover'}
+                            ),
+                ),
+                dmc.Stack([
+                    html.H4(value, className="ban"),
+                    html.H4(title, className="ban")
+                ], spacing=0
+                )
             ]
         )
-
 
 
 layout = html.Div(
     [       
     dbc.Row(
-        html.Div(
-            html.H2("Civilian Targeting (2017-2024)", style={'textAlign': 'center', 'color': 'white'}),
-            style={'border': '2px solid black', 'padding': '10px'}
-        ),
+        html.Div([
+            html.Br(),
+            html.H2("Civilian Targeting (2017-2024)", 
+                    style={'textAlign': 'center', 'color': 'red'},
+                    # className='title-red'
+                    ),        
+                ]
+            ),
         style={'padding-bottom': '2%', 'padding-top': '2%'},
     ),
   
         dbc.Row(
             [
-
-                dbc.Col(dbc.Card(addCardBody(total_fatalities, 'Total Fatalities'), color="danger", inverse=True), width=3), 
-                # dbc.Col(dcc.Dropdown(['All', 'Gaza Strip', 'West Bank'], 'All', id='dropdown-1', )),
-                dbc.Col(dbc.Card(addCardBody(total_events, 'Total Events'), color="danger", inverse=True), width=3), 
-                #dbc.Col(dcc.Dropdown(['All', 'Gaza Strip', 'West Bank'], 'All', id='dropdown-1', ), width=6),
-                #dbc.Col(dcc.Graph(figure=bar4(df)), width=6),
+                dbc.Col(dbc.Card(addCardBody('Total Fatalities', total_fatalities, '../assets/Mat_Kids.svg'), color="primary", inverse=True), width=3), 
+                dbc.Col(dbc.Card(addCardBody('Total Events', total_events, '../assets/w-falling-bomb.svg'), color="primary", inverse=True), width=3), 
             ],  
-            # style = {'padding-left' : '10%', 'padding-right': '10%'} , 
             justify="center",
         ),
         html.Br(),
 
         dbc.Row(
             [
-                dbc.Col(dcc.Graph(figure=pie1(df))),
-                
-                dbc.Col(dcc.Graph(figure=pie2(df))),
+                dbc.Col(dcc.Graph(figure=pieEvents(df))),
+                dbc.Col(dcc.Graph(figure=pieFatalities(df))),
             ], 
         ),
         html.Br(),
 
         dbc.Row(
             [
-                dbc.Col(dcc.Graph(figure=tree1(df))),
+                dbc.Col(dcc.Graph(figure=tree(df))),
                 dbc.Col(dcc.Graph(figure=map1(df))),
             ], 
         ),  
         dbc.Row(
             [
-                dbc.Col(dcc.Dropdown(['All', 'Gaza Strip', 'West Bank'], 'All', id='dropdown-1', 
+                dbc.Col(dcc.Dropdown(['All Sectors', 'Gaza Strip', 'West Bank'], 'All Sectors', id='dropdown-1', placeholder='Select Sector...',
                                      style={'color' : 'black', 'margin' : '20px'} ), width={"size": 6, "offset": 3}),
-                # dbc.Col(
-                #     dmc.MultiSelect(
-                #         label="Select Reigon",
-                #         placeholder="Select as you like!",
-                #         id="multi-select",
-                #         value=["Gaze Stip", "West Bank"],
-                #         data=[
-                #             {"value": "Gaze Stip", "label": "Gaze Stip"},
-                #             {"value": "West Bank", "label": "West Bank"},
-                #         ],
-                #         w=400,
-                #         mb=10,
-                #         pos='center'
-                #     ), align='center', width=12
-                # ),
             ]
         ),
 
         dbc.Row(
             [
-
-                dbc.Col(dcc.Graph(
-                   figure=bar3(df, 'All'), 
-                    id='graph-1'), width=6),
-                dbc.Col(dcc.Graph(
-                   figure=bar4(df, 'All'), 
-                    id='graph-2'), width=6),
-				# style = {'padding-right' : '2%'} 
+                dbc.Col(dcc.Graph(figure=bar3(df, 'All Sectors'), id='graph-1'), width=6),
+                dbc.Col(dcc.Graph(figure=bar4(df, 'All Sectors'), id='graph-2'), width=6),
             ], style={'margin-bottom' : 20}
         ),  
         
@@ -423,19 +339,21 @@ layout = html.Div(
 
         dbc.Row(
             [
-
                 dbc.Col(dcc.Graph(
-                   figure=line5(df, 'All'), 
+                   figure=lineMonthlyEvents(df, 'All Sectors'), 
                     id='graph-3'), width=6),
                 dbc.Col(dcc.Graph(
-                   figure=line6(df, 'All'), 
+                   figure=lineMonthlyFatalities(df, 'All Sectors'), 
                     id='graph-4'), width=6),
-				# style = {'padding-right' : '2%'} 
             ], 
         ),
 
 
-    ]
+    ],
+    style={
+        'backgroundColor': '#212121',  # Dark background
+        'color': '#fff',  # White text
+    }
 )
 
 @callback(
@@ -446,25 +364,5 @@ layout = html.Div(
     Input('dropdown-1', 'value')
 )
 def dropdown_selection(value):
-    print(value)
-    return bar3(df, value), bar4(df, value), line5(df, value), line6(df, value)
+    return bar3(df, value), bar4(df, value), lineMonthlyEvents(df, value), lineMonthlyFatalities(df, value)
 
-
-# @callback(
-#     Output('graph-1', 'figure'),
-#     Output('graph-2', 'figure'),
-#     Output('graph-3', 'figure'),
-#     Output('graph-4', 'figure'),
-#     Input('multi-select', 'value')
-# )
-# def multi_selection(value):
-#     if len(value) == 1:
-#         value = value[0]
-#     else:
-#         value = 'All'
-#     return bar3(df, value), bar4(df, value), line5(df, value), line6(df, value)
-
-
-if __name__ == "__main__":
-    app.run_server(debug=True)
-# app.run_server(use_reloader=True)

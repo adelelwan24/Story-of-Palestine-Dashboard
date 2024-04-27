@@ -33,7 +33,6 @@ all_icons = [
 
 
 def navbar():
-    print(dash.page_registry.keys())
     return dmc.Grid(
         [
             dmc.ActionIcon(

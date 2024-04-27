@@ -15,6 +15,7 @@ support_data2 = pd.read_excel('data/SupportData_2.xlsx')
 dash.register_page(
     __name__,
     title='Story Of Palestine | Support',
+    image='assets/support/gazadamage.jpg',
     description=    "Stop the attacks on Gaza!"
                     "Take action for Palestine",
     order=4,
@@ -71,15 +72,16 @@ layout = dmc.Grid(
             [   
                 dmc.Stack(
                     children=[
-                        dmc.Title('Stand With Palestine..', 
-                                  style={'color': 'red'}, align='center', mt=30),
+                        dmc.Title('Stand With Palestine..', className='title-green', order=1,
+                                  style={'font-size': '200'}, align='center', 
+                                  mt=30),
                         dmc.Stack(
                             [
-                                dmc.Text(
+                                dmc.Title(
                                     children=[
                                         "Stop the attacks on Gaza!, Take action for Palestine",
-                                    ],
-                                    style={'color': 'gray', 'width': '100%'},
+                                    ], order=5, align='center',
+                                    style={'color': 'white', 'width': '100%'},
                                 ),
                                 dmc.Select(
                                     id='support-dropdown',
@@ -87,12 +89,14 @@ layout = dmc.Grid(
                                     searchable=True,
                                     value='Support',
                                     nothingFound="No options found",
-                                    style={"width": 200},
+                                    style={"width": 500, 'align' : 'center'},
+                                    # w='60%', pos='center',
+                                    icon=DashIconify(icon='ph:first-aid-bold'),
                                 ),
                             ]
                         ),
-                        dmc.Title('Support Palestine', 
-                                  style={'color': 'red'}, align='center', mt=30),
+                        # dmc.Title('Support Palestine', 
+                        #           style={'color': 'red'}, align='center', mt=30),
                     ],
                     align='center',
                     # justify='flex-end',

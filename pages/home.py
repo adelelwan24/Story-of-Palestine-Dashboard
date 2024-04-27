@@ -27,7 +27,8 @@ layout = dmc.Grid(
         dmc.Col(
             [   
                 # de.Lottie(url=f'http://127.0.0.1:8050/loader?lottie=flag.json', options=options, isClickToPauseDisabled=True),
-                de.Lottie(url=f'/loader?lottie={lottie_name}', options=options, isClickToPauseDisabled=True, width='50%'),
+                de.Lottie(url=f'/loader?lottie={lottie_name}', options=options, 
+                          isClickToPauseDisabled=True, width='50%', speed=1),
                 # html.Img(src='assets\palestinian-map.png', style={'height' : '70vh'}),
                 dmc.Stack(
                     children=[

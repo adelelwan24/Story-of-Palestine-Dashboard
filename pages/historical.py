@@ -3,7 +3,6 @@ from dash import dcc, callback, Input, Output, html
 import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc
 
-
 import pandas as pd
 
 story = pd.read_excel('data/story.xlsx')
@@ -34,10 +33,10 @@ def left_content(*, title, date, description, image, tooltip_text):
     return [
         dmc.Space(h='15px'),
         dmc.Title(title, id='story-title', order=1, className='title-green'),
-        dmc.Title(date, id='story-date', order=2,
-                   style={'color': 'red',
-                          '-webkit-text-stroke-width': '1.3px',
-                          '-webkit-text-stroke-color': 'black'},
+        dmc.Title(date, id='story-date', order=2, className='title-red',
+                #    style={'color': 'red',
+                #           '-webkit-text-stroke-width': '1.3px',
+                #           '-webkit-text-stroke-color': 'black'},
                    align='center'
                    ),
         html.Img(
