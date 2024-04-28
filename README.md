@@ -12,19 +12,27 @@ Visit the website at [Story-Of-Palestine](https://story-of-palestine-dashboard.o
 
 <table>
   <tr>
-    <td>Page</td>
-    <td>Home</td>
-    <td>Historical</td>
-    <td>Civilian Targeting</td>
-    <td>Internally displaced people</td>
-    <td>Support</td>
+    <th>Page</th>
+    <th>Purpose</th>
   </tr>
   <tr>
-    <th>Purpose</th>
+    <td>Home</td>
     <td>Welcome page</td>
+  </tr>
+  <tr>
+    <td>Historical</td>
     <td>Delve into the rich cultural heritage and history of Palestine, understanding its journey through time. 📜</td>
+  </tr>
+  <tr>
+    <td>Civilian Targeting</td>
     <td>Explore the devastating impact of civilian targeting during the years 2017-2024, highlighting the atrocities inflicted upon innocent lives. 💔😢</td>
+  </tr>
+  <tr>
+    <td>Internally displaced people</td>
     <td>Gain insights into the experiences of internally displaced individuals in the West Bank and Gaza, shedding light on the difficulties they face. 🏠🚶‍♂️</td>
+  </tr>
+  <tr>
+    <td>Support</td>
     <td>Provides different ways for supporting Palestine, empowering users to take actionable steps towards making a difference. 🌟</td>
   </tr>
 </table>
