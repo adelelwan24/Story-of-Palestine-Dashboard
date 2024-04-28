@@ -156,14 +156,14 @@ layout = html.Div(
         
         dbc.Row(
             [
-                dbc.Col(html.Div(dcc.Graph(figure=fig)), style={'padding-left': '2%'}),
+                dbc.Col(html.Div(dcc.Graph(figure=fig))),
                 dbc.Col(html.Div(dcc.Graph(figure=fig1))),
             ], 
         ),
         html.Br(),
         dbc.Row(
             [
-               dbc.Col(html.Div(dcc.Graph(figure=fig3)), style={'padding-left': '2%'}),
+               dbc.Col(html.Div(dcc.Graph(figure=fig3))),
                dbc.Col(html.Div(dcc.Graph(figure=fig2)))
             ], 
         ),
@@ -174,7 +174,7 @@ layout = html.Div(
             html.Br(),
         dbc.Row(
             [
-                dbc.Col(html.Div(dcc.Graph(figure=fig4)), style={'padding-left': '2%'}),
+                dbc.Col(html.Div(dcc.Graph(figure=fig4))),
                 dbc.Col(html.Div(dcc.Graph(figure=fig5)))
             ], 
         ),
