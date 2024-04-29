@@ -81,6 +81,12 @@ To run the project, follow these steps:
 2. Install the dependencies in the requirement file.
 3. Navigate to the `app.py`  and run it.
 
+## Additional Resources 
+
+- Check out the El-da7ee7 episode for more insights: [El-da7ee7 Episode](https://youtu.be/f0oy-NicIgE?si=-2jEHpHCb5HcbLwQ) 📺
+- Stand With Palestine! up-to-date website: [Stand With Palestine](https://stand-with-palestine.org/) 🇵🇸
+
+
 ## 👥 Collaborators
 
 <table>
